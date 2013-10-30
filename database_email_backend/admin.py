@@ -7,6 +7,7 @@ from django.core.urlresolvers import reverse
 from django.core.mail import message
 from django.db.models import Count
 from django.utils.functional import update_wrapper
+from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext as _
 from django.template.defaultfilters import linebreaks_filter
 
@@ -56,9 +57,7 @@ class EmailAdmin(admin.ModelAdmin):
     attachment_count.admin_order_field = 'attachment_count_cache'
     
     def body_stripped(self, obj):
-        if obj.body and len(obj.body)>100:
-            return obj.body[:100] + ' [...]'
-        return obj.body
+        return mark_safe(obj.body)
     body_stripped.short_description = 'body'
     body_stripped.admin_order_field = 'body'
 
