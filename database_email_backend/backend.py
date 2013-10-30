@@ -18,7 +18,7 @@ class DatabaseEmailBackend(BaseEmailBackend):
                 all_recipients = u', '.join(message.recipients()),
                 subject = u'%s' % message.subject,
                 body = u'%s' % message.body,
-                raw = u'%s' % smart_unicode(message.message().as_string())
+                raw = smart_unicode(message.message().as_string())
             )
             for attachment in message.attachments:
                 if isinstance(attachment, tuple):
