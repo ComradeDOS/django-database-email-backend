@@ -1,4 +1,5 @@
 #-*- coding: utf-8 -*-
+from functools import update_wrapper
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseRedirect
 from django.contrib import admin
@@ -7,7 +8,6 @@ from django.http import HttpResponse
 from django.core.urlresolvers import reverse
 from django.core.mail import message
 from django.db.models import Count
-from django.utils.functional import update_wrapper
 from django.utils.translation import ugettext as _
 
 from database_email_backend.models import Email, Attachment
@@ -62,7 +62,7 @@ class EmailAdmin(admin.ModelAdmin):
 
     def get_urls(self):
         urlpatterns = super(EmailAdmin, self).get_urls()
-        from django.conf.urls.defaults import patterns, url
+        from django.conf.urls import patterns, url
 
         def wrap(view):
             def wrapper(*args, **kwargs):
