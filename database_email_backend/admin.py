@@ -1,4 +1,6 @@
 #-*- coding: utf-8 -*-
+from functools import update_wrapper
+from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseRedirect
 from django.contrib import admin
 from django import forms
@@ -6,9 +8,7 @@ from django.http import HttpResponse
 from django.core.urlresolvers import reverse
 from django.core.mail import message
 from django.db.models import Count
-from django.utils.functional import update_wrapper
 from django.utils.translation import ugettext as _
-from django.template.defaultfilters import linebreaks_filter
 
 from database_email_backend.models import Email, Attachment
 
@@ -56,15 +56,13 @@ class EmailAdmin(admin.ModelAdmin):
     attachment_count.admin_order_field = 'attachment_count_cache'
     
     def body_stripped(self, obj):
-        if obj.body and len(obj.body)>100:
-            return obj.body[:100] + ' [...]'
         return obj.body
     body_stripped.short_description = 'body'
     body_stripped.admin_order_field = 'body'
 
     def get_urls(self):
         urlpatterns = super(EmailAdmin, self).get_urls()
-        from django.conf.urls.defaults import patterns, url
+        from django.conf.urls import patterns, url
 
         def wrap(view):
             def wrapper(*args, **kwargs):
@@ -89,7 +87,7 @@ class EmailAdmin(admin.ModelAdmin):
         return response
 
     def body_br(self, obj):
-        return linebreaks_filter(obj.body)
+        return obj.body
     body_br.allow_tags = True
     body_br.short_description = 'body'
     body_br.admin_order_field = 'body'
