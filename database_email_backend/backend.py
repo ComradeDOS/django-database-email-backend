@@ -13,7 +13,7 @@ class DatabaseEmailBackend(BaseEmailBackend):
 
     def __init__(self, *args, **kwargs):
         super(DatabaseEmailBackend, self).__init__(*args, **kwargs)
-        if settings.SECOND_EMAIL_BACKEND:
+        if hasattr(settings, 'SECOND_EMAIL_BACKEND'):
             self.second_backend = get_connection(
                                         backend=settings.SECOND_EMAIL_BACKEND,
                                         **kwargs)
