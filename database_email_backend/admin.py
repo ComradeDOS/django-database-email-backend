@@ -71,11 +71,11 @@ class EmailAdmin(admin.ModelAdmin):
 
         appname = self.model._meta.app_label
 
-        urlpatterns = (
+        urlpatterns = [
             url(r'^(?P<email_id>\d+)/attachments/(?P<attachment_id>\d+)/(?P<filename>[\w.]+)$',
                 wrap(self.serve_attachment),
-                name='%s_email_attachment' % appname),
-        ) + urlpatterns
+                name='%s_email_attachment' % appname)
+        ] + urlpatterns
         return urlpatterns
 
     def serve_attachment(self, request, email_id, attachment_id, filename, extra_context=None):
