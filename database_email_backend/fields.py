@@ -17,12 +17,3 @@ class Base64Field(models.TextField):
 
     def set_data(self, obj, data):
         setattr(obj, self.field_name, base64.encodestring(data))
-
-try:
-    from south.modelsinspector import add_introspection_rules
-    add_introspection_rules(
-        [([Base64Field],[],{})],
-        ["^database_email_backend\.fields\.Base64Field"]
-    )
-except ImportError:
-    pass
