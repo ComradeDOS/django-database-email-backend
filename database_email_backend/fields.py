@@ -9,8 +9,8 @@ class Base64Field(models.TextField):
         if self.db_column is None:
             self.db_column = name
         self.field_name = name + '_base64'
-        super(Base64Field, self).contribute_to_class(cls, self.field_name)
-        setattr(cls, name, property(self.get_data, self.set_data))
+        super(Base64Field, self).contribute_to_class(cls, name)
+        setattr(cls, self.field_name, property(self.get_data, self.set_data))
 
     def get_data(self, obj):
         return base64.decodestring(getattr(obj, self.field_name))
