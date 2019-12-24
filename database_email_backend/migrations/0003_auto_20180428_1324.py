@@ -20,6 +20,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='attachment',
             name='content',
-            field=database_email_backend.fields.Base64Field(blank=True, db_column=b'content', default=None, null=True),
+            field=database_email_backend.fields.Base64Field(blank=True, db_column='content', default=None, null=True),
         ),
     ]
