@@ -1,9 +1,9 @@
 #-*- coding: utf-8 -*-
-from email.MIMEBase import MIMEBase
+from email.mime.base import MIMEBase
 
 from django.core.mail.backends.base import BaseEmailBackend
 from django.core.mail import get_connection
-from django.utils.encoding import smart_unicode
+from django.utils.encoding import smart_str
 from django.conf import settings
 
 from database_email_backend.models import Email, Attachment
@@ -46,14 +46,14 @@ class DatabaseEmailBackend(BaseEmailBackend):
 
         try:
             email = Email.objects.create(
-                from_email = u'%s' % message.from_email,
-                to_emails = u', '.join(message.to),
-                cc_emails = u', '.join(message.cc),
-                bcc_emails = u', '.join(message.bcc),
-                all_recipients = u', '.join(message.recipients()),
-                subject = u'%s' % message.subject,
-                body = u'%s' % message.body,
-                raw = smart_unicode(message.message().as_string())
+                from_email = '%s' % message.from_email,
+                to_emails = ', '.join(message.to),
+                cc_emails = ', '.join(message.cc),
+                bcc_emails = ', '.join(message.bcc),
+                all_recipients = ', '.join(message.recipients()),
+                subject = '%s' % message.subject,
+                body = '%s' % message.body,
+                raw = smart_str(message.message().as_string())
             )
             for attachment in message.attachments:
                 if isinstance(attachment, tuple):

@@ -29,13 +29,15 @@ class AttachmentInlineAdmin(admin.TabularInline):
     fields = ('file_link', 'mimetype',)
 
     def file_link(self, obj):
+        if obj.id is None:
+            return ''
         url_name = '%s:%s_email_attachment' % (self.admin_site.name, self.model._meta.app_label,)
         kwargs={
             'email_id': str(obj.email_id),
             'attachment_id': str(obj.id),
             'filename': str(obj.filename)}
         url = reverse(url_name, kwargs=kwargs)
-        return u'<a href="%(url)s">%(filename)s</a>' % {'filename': obj.filename, 'url': url}
+        return '<a href="%(url)s">%(filename)s</a>' % {'filename': obj.filename, 'url': url}
     file_link.allow_tags = True
 
 
@@ -101,12 +103,12 @@ admin.site.register(Email, EmailAdmin)
 
 
 class SendEmail(Email):
-    class Meta:
+    class Meta(object):
         proxy = True
 
 
 class SendEmailForm(forms.ModelForm):
-    class Meta:
+    class Meta(object):
         model = SendEmail
         widgets = {
             'from_email': forms.TextInput(attrs={'size': '30'}),
