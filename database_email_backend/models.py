@@ -27,7 +27,7 @@ class Email(models.Model):
         return self.attachment_count_cache
 
 class Attachment(models.Model):
-    email = models.ForeignKey(Email, related_name='attachments')
+    email = models.ForeignKey(Email, related_name='attachments', on_delete=models.CASCADE)
     filename = models.CharField(max_length=255, null=True, blank=True, default=None)
     content = Base64Field(null=True, blank=True, default=None)
     mimetype = models.CharField(max_length=255, null=True, blank=True, default=None)
